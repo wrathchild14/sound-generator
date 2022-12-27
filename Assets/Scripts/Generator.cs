@@ -12,6 +12,8 @@ public class Generator : MonoBehaviour
         Noise
     }
 
+    private const int SampleRate = 44100;
+
     public AudioSource audioSource;
 
     [Header("Frequencies")] public float startFrequency = 440;
@@ -35,7 +37,7 @@ public class Generator : MonoBehaviour
         set => volume = value;
     }
 
-    public void Randomize()
+    public void RandomizeAndPlaySoundClip()
     {
         startFrequency = Random.Range(3.0f, 3500.0f);
         cutoffFrequency = Random.Range(3.0f, 3500.0f);
@@ -60,15 +62,20 @@ public class Generator : MonoBehaviour
         PlayClip();
     }
 
-    public void CreateSound()
+    public void GenerateAndPLaySoundClip()
     {
-        const int sampleRate = 44100;
+        CreateSound();
+        PlayClip();
+    }
+
+    private void CreateSound()
+    {
         var duration = attackTime + decayTime + releaseTime;
-        var numSamples = (int)(sampleRate * duration);
+        var numSamples = (int)(SampleRate * duration);
         var samples = new float[numSamples];
         for (var i = 0; i < numSamples; i++)
         {
-            var t = i / (float)sampleRate;
+            var t = i / (float)SampleRate;
             float envelope;
             if (t < attackTime)
                 envelope = t / attackTime;
@@ -104,13 +111,13 @@ public class Generator : MonoBehaviour
         }
 
         // removing 3d because is deprecated
-        var clip = AudioClip.Create("Jump Sound", numSamples, 1, sampleRate, false);
+        var clip = AudioClip.Create("Sound Clip", numSamples, 1, SampleRate, false);
         clip.SetData(samples, 0);
 
         audioSource.clip = clip;
     }
 
-    public void PlayClip()
+    private void PlayClip()
     {
         audioSource.Play();
     }

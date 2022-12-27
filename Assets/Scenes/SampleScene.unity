@@ -846,7 +846,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 620579361}
         m_TargetAssemblyTypeName: Generator, Assembly-CSharp
-        m_MethodName: Randomize
+        m_MethodName: RandomizeAndPlaySoundClip
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1244,9 +1244,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 620579360}
-        m_TargetAssemblyTypeName: TestingSoundGeneration, Assembly-CSharp
-        m_MethodName: TestFunction
+      - m_Target: {fileID: 620579361}
+        m_TargetAssemblyTypeName: Generator, Assembly-CSharp
+        m_MethodName: GenerateAndPLaySoundClip
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
