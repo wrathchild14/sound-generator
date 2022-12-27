@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Generator : MonoBehaviour
 {
@@ -33,33 +32,27 @@ public class Generator : MonoBehaviour
 
     public void CreateJumpingSound()
     {
-        int sampleRate = 44100;
-        float duration = attackTime + decayTime + releaseTime;
-        int numSamples = (int)(sampleRate * duration);
-        float[] samples = new float[numSamples];
-        for (int i = 0; i < numSamples; i++)
+        const int sampleRate = 44100;
+        var duration = attackTime + decayTime + releaseTime;
+        var numSamples = (int)(sampleRate * duration);
+        var samples = new float[numSamples];
+        for (var i = 0; i < numSamples; i++)
         {
-            float t = i / (float)sampleRate;
-            float envelope = 1;
+            var t = i / (float)sampleRate;
+            float envelope;
             if (t < attackTime)
-            {
                 envelope = t / attackTime;
-            }
             else if (t < attackTime + decayTime)
-            {
                 envelope = 1 - (t - attackTime) / decayTime * (1 - sustainLevel);
-            }
             else
-            {
                 envelope = sustainLevel * (1 - (t - attackTime - decayTime) / releaseTime);
-            }
 
-            float frequency = startFrequency + (cutoffFrequency - startFrequency) * t / duration * slideRate;
-            float vibrato = Mathf.Sin(2 * Mathf.PI * vibratoFrequency * t) * vibratoDepth;
-            float arpeggio = Mathf.Pow(2,
+            var frequency = startFrequency + (cutoffFrequency - startFrequency) * t / duration * slideRate;
+            var vibrato = Mathf.Sin(2 * Mathf.PI * vibratoFrequency * t) * vibratoDepth;
+            var arpeggio = Mathf.Pow(2,
                 (Mathf.Sin(2 * Mathf.PI * arpeggioFrequency * t) * arpeggioOctaveRange + arpeggioOctaveRange) / 12) - 1;
 
-            float phase = (frequency * arpeggio + vibrato) * t * 2 * Mathf.PI;
+            var phase = (frequency * arpeggio + vibrato) * t * 2 * Mathf.PI;
             switch (type)
             {
                 case SoundWave.Square:
@@ -69,7 +62,7 @@ public class Generator : MonoBehaviour
                     samples[i] = (2 * (phase % (2 * Mathf.PI)) / (2 * Mathf.PI) - 1) * envelope * volume;
                     break;
                 case SoundWave.Noise:
-                    float noise = Mathf.PerlinNoise(t * noiseFrequency, 0) * 2 - 1;
+                    var noise = Mathf.PerlinNoise(t * noiseFrequency, 0) * 2 - 1;
                     samples[i] = noise * envelope * volume;
                     break;
                 case SoundWave.Sine:
@@ -80,7 +73,8 @@ public class Generator : MonoBehaviour
             }
         }
 
-        AudioClip clip = AudioClip.Create("Jump Sound", numSamples, 1, sampleRate, false, false);
+        // removing 3d because is deprecated
+        var clip = AudioClip.Create("Jump Sound", numSamples, 1, sampleRate, false);
         clip.SetData(samples, 0);
 
         audioSource.clip = clip;
