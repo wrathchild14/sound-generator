@@ -13,20 +13,19 @@ public class Generator : MonoBehaviour
 
     public AudioSource audioSource;
 
-    public float startFrequency = 440;
+    [Header("Frequencies")] public float startFrequency = 440;
     public float cutoffFrequency = 880;
     public float slideRate = 1;
-    public float vibratoFrequency = 5;
+    [Header("Vibrato")] public float vibratoFrequency = 5;
     public float vibratoDepth = 1;
-    public float volume = 1;
-    public float attackTime = 0.1f;
+    [Header("Volume")] public float volume = 1;
+    [Header("Envelope")] public float attackTime = 0.1f;
     public float decayTime = 0.1f;
     public float sustainLevel = 0.5f;
     public float releaseTime = 0.1f;
-    public float arpeggioFrequency = 4;
+    [Header("Arpeggio")] public float arpeggioFrequency = 4;
     public int arpeggioOctaveRange = 2;
-
-    public float noiseFrequency = 10;
+    [Header("Noise")] public float noiseFrequency = 100;
 
     public SoundWave type = SoundWave.Sine;
 
