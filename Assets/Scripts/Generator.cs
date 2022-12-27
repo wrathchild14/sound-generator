@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Generator : MonoBehaviour
 {
@@ -24,12 +25,42 @@ public class Generator : MonoBehaviour
     public float sustainLevel = 0.5f;
     public float releaseTime = 0.1f;
     [Header("Arpeggio")] public float arpeggioFrequency = 4;
-    public int arpeggioOctaveRange = 2;
     [Header("Noise")] public float noiseFrequency = 100;
 
     public SoundWave type = SoundWave.Sine;
 
-    public void CreateJumpingSound()
+    public float Volume
+    {
+        get => volume;
+        set => volume = value;
+    }
+
+    public void Randomize()
+    {
+        startFrequency = Random.Range(3.0f, 3500.0f);
+        cutoffFrequency = Random.Range(3.0f, 3500.0f);
+        slideRate = Random.Range(-10.0f, 10.0f);
+
+        vibratoDepth = Random.Range(0.0f, 50.0f);
+        vibratoFrequency = Random.Range(0.0f, 100.0f);
+        sustainLevel = Random.Range(0.0f, 1.0f);
+
+        attackTime = Random.Range(0.0f, 2.2f);
+        decayTime = Random.Range(0.0f, 2.2f);
+        sustainLevel = Random.Range(0.0f, 1.0f);
+        releaseTime = Random.Range(0.0f, 2.2f);
+
+        arpeggioFrequency = Random.Range(0.1f, 4.0f);
+
+        noiseFrequency = Random.Range(200.0f, 3500.0f);
+
+        type = (SoundWave)Random.Range(0, Enum.GetValues(typeof(SoundWave)).Length);
+
+        CreateSound();
+        PlayClip();
+    }
+
+    public void CreateSound()
     {
         const int sampleRate = 44100;
         var duration = attackTime + decayTime + releaseTime;
@@ -48,10 +79,10 @@ public class Generator : MonoBehaviour
 
             var frequency = startFrequency + (cutoffFrequency - startFrequency) * t / duration * slideRate;
             var vibrato = Mathf.Sin(2 * Mathf.PI * vibratoFrequency * t) * vibratoDepth;
-            var arpeggio = Mathf.Pow(2,
-                (Mathf.Sin(2 * Mathf.PI * arpeggioFrequency * t) * arpeggioOctaveRange + arpeggioOctaveRange) / 12) - 1;
+            var arpeggio = Mathf.Floor(t * arpeggioFrequency) % 2 * (cutoffFrequency - startFrequency) /
+                           arpeggioFrequency;
 
-            var phase = (frequency * arpeggio + vibrato) * t * 2 * Mathf.PI;
+            var phase = (frequency + arpeggio + vibrato) * t * 2 * Mathf.PI;
             switch (type)
             {
                 case SoundWave.Square:
