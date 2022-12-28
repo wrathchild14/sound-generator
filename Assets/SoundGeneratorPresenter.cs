@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class SoundGeneratorPresenter : MonoBehaviour
 {
     public Generator generator;
+    private float[] _generatorValues;
 
     private Slider[] _sliders;
 
@@ -19,7 +20,12 @@ public class SoundGeneratorPresenter : MonoBehaviour
 
     private void UpdateSliders()
     {
-        foreach (var slider in _sliders) slider.value = generator.volume;
+        // note: must be in the correct order
+        _generatorValues = generator.GetCurrentValues();
+        for (var i = 0; i < Generator.ParametersCount; i++)
+        {
+            _sliders[i].value = _generatorValues[i];
+        }
     }
 
     public void RandomizeAndPlaySoundClip()

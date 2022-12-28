@@ -12,6 +12,7 @@ public class Generator : MonoBehaviour
         Noise
     }
 
+    public const int ParametersCount = 12;
     private const int SampleRate = 44100;
 
     public AudioSource audioSource;
@@ -40,14 +41,13 @@ public class Generator : MonoBehaviour
     public void Randomize()
     {
         volume = Random.Range(0.2f, 1.2f);
-        
+
         startFrequency = Random.Range(3.0f, 3500.0f);
         cutoffFrequency = Random.Range(3.0f, 3500.0f);
         slideRate = Random.Range(-10.0f, 10.0f);
 
         vibratoDepth = Random.Range(0.0f, 50.0f);
         vibratoFrequency = Random.Range(0.0f, 100.0f);
-        sustainLevel = Random.Range(0.0f, 1.0f);
 
         attackTime = Random.Range(0.0f, 2.2f);
         decayTime = Random.Range(0.0f, 2.2f);
@@ -119,5 +119,24 @@ public class Generator : MonoBehaviour
     private void PlayClip()
     {
         audioSource.Play();
+    }
+
+    public float[] GetCurrentValues()
+    {
+        // woah (should be a better way to do this, but this is the most optimized?)
+        var array = new float[ParametersCount];
+        array[0] = volume;
+        array[1] = startFrequency;
+        array[2] = cutoffFrequency;
+        array[3] = slideRate;
+        array[4] = vibratoFrequency;
+        array[5] = vibratoDepth;
+        array[6] = attackTime;
+        array[7] = decayTime;
+        array[8] = sustainLevel;
+        array[9] = releaseTime;
+        array[10] = arpeggioFrequency;
+        array[11] = noiseFrequency;
+        return array;
     }
 }
