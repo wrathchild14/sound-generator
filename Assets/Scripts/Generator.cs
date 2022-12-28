@@ -32,12 +32,6 @@ public class Generator : MonoBehaviour
 
     public SoundWave type = SoundWave.Sine;
 
-    public float Volume
-    {
-        get => volume;
-        set => volume = value;
-    }
-
     public void Randomize()
     {
         volume = Random.Range(0.2f, 1.2f);
@@ -139,4 +133,68 @@ public class Generator : MonoBehaviour
         array[11] = noiseFrequency;
         return array;
     }
+
+    #region SettersForSliders
+
+    public float Volume
+    {
+        set => volume = value;
+    }
+
+    public float StartFrequency
+    {
+        set => startFrequency = value;
+    }
+
+    public float CutoffFrequency
+    {
+        set => cutoffFrequency = value;
+    }
+
+    public float SlideRate
+    {
+        set => slideRate = value;
+    }
+
+    public float VibratoDepth
+    {
+        set => vibratoDepth = value;
+    }
+
+    public float VibratoFreq
+    {
+        set => vibratoFrequency = value;
+    }
+
+    public float AttackTime
+    {
+        set => attackTime = value;
+    }
+
+    public float DecayTime
+    {
+        set => decayTime = value;
+    }
+
+    public float SustainLevel
+    {
+        set => sustainLevel = value;
+    }
+
+    public float ReleaseTime
+    {
+        set => releaseTime = value;
+    }
+
+    public float ArpeggioFreq
+    {
+        set => arpeggioFrequency = value;
+    }
+
+    public float NoiseFreq
+    {
+        set => noiseFrequency = value;
+    }
+
+    #endregion
 }
