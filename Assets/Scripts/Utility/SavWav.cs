@@ -87,7 +87,7 @@ namespace Utility
 
             samples.RemoveRange(i, samples.Count - i);
 
-            var clip = AudioClip.Create("TempClip", samples.Count, channels, hz, _3D, stream);
+            var clip = AudioClip.Create("TempClip", samples.Count, channels, hz, stream);
 
             clip.SetData(samples.ToArray(), 0);
 
@@ -154,7 +154,6 @@ namespace Utility
             var subChunk1 = BitConverter.GetBytes(16);
             fileStream.Write(subChunk1, 0, 4);
 
-            ushort two = 2;
             ushort one = 1;
 
             var audioFormat = BitConverter.GetBytes(one);
