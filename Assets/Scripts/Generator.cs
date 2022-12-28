@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Globalization;
+using System.IO;
 using UnityEngine;
+using UnityEngine.Video;
+using Utility;
 using Random = UnityEngine.Random;
 
 public class Generator : MonoBehaviour
@@ -133,6 +137,22 @@ public class Generator : MonoBehaviour
         array[10] = arpeggioFrequency;
         array[11] = noiseFrequency;
         return array;
+    }
+
+    public void SaveToFile()
+    {
+        if (audioSource.clip != null)
+        {
+            var date = DateTime.Now.ToString("MM-dd-yyyy");
+            var fileName = "generated-" + type + "sound-" + date;
+            var dataPath = Application.persistentDataPath;
+            var filePath = Path.Combine(dataPath, fileName);
+            Debug.Log(SavWav.Save(filePath, audioSource.clip) ? "saved file" : "error, could not save file");
+        }
+        else
+        {
+            Debug.Log("clip is null, could not save");
+        }
     }
 
     #region TypeConverters
