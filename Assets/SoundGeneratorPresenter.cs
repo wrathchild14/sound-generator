@@ -13,19 +13,11 @@ public class SoundGeneratorPresenter : MonoBehaviour
         _sliders = GetComponentsInChildren<Slider>();
     }
 
-    // Update is called once per frame
-    private void Update()
-    {
-    }
-
     private void UpdateSliders()
     {
         // note: must be in the correct order
         _generatorValues = generator.GetCurrentValues();
-        for (var i = 0; i < Generator.ParametersCount; i++)
-        {
-            _sliders[i].value = _generatorValues[i];
-        }
+        for (var i = 0; i < Generator.ParametersCount; i++) _sliders[i].value = _generatorValues[i];
     }
 
     public void RandomizeAndPlaySoundClip()
