@@ -9,10 +9,10 @@ public class TextSliderController : MonoBehaviour
 
     private void Start()
     {
-        slider.onValueChanged.AddListener(delegate { ValueChangedCheck(); });
+        slider.onValueChanged.AddListener(delegate { ValueChanged(); });
     }
 
-    private void ValueChangedCheck()
+    private void ValueChanged()
     {
         text.text = slider.value.ToString(CultureInfo.InvariantCulture);
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class Generator : MonoBehaviour
@@ -39,6 +40,12 @@ public class Generator : MonoBehaviour
 
     public void RandomizeAndPlaySoundClip()
     {
+        var sliders = GetComponentsInChildren<Slider>();
+
+        var value = Random.Range(0.2f, 1.2f);
+        Volume = value;
+        sliders[0].value = value;
+        
         startFrequency = Random.Range(3.0f, 3500.0f);
         cutoffFrequency = Random.Range(3.0f, 3500.0f);
         slideRate = Random.Range(-10.0f, 10.0f);
@@ -62,7 +69,7 @@ public class Generator : MonoBehaviour
         PlayClip();
     }
 
-    public void GenerateAndPLaySoundClip()
+    public void GenerateAndPlaySoundClip()
     {
         CreateSound();
         PlayClip();
