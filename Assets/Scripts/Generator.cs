@@ -115,6 +115,7 @@ public class Generator : MonoBehaviour
         audioSource.Play();
     }
 
+
     public float[] GetCurrentValues()
     {
         // woah (should be a better way to do this, but this is the most optimized?)
@@ -133,6 +134,30 @@ public class Generator : MonoBehaviour
         array[11] = noiseFrequency;
         return array;
     }
+
+    #region TypeConverters
+
+    public void ToSquare()
+    {
+        type = SoundWave.Square;
+    }
+
+    public void ToSawtooth()
+    {
+        type = SoundWave.Sawtooth;
+    }
+
+    public void ToSine()
+    {
+        type = SoundWave.Sine;
+    }
+
+    public void ToNoise()
+    {
+        type = SoundWave.Noise;
+    }
+
+    #endregion
 
     #region SettersForSliders
 

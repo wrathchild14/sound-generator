@@ -3,7 +3,10 @@ using UnityEngine.UI;
 
 public class SoundGeneratorPresenter : MonoBehaviour
 {
-    public Generator generator;
+    [Header("Controller")] public Generator generator;
+
+    [Header("Other")] public Text typeText;
+
     private float[] _generatorValues;
 
     private Slider[] _sliders;
@@ -25,5 +28,11 @@ public class SoundGeneratorPresenter : MonoBehaviour
         generator.Randomize();
         generator.GenerateAndPlaySoundClip();
         UpdateSliders();
+        OnChangedType();
+    }
+
+    public void OnChangedType()
+    {
+        typeText.text = generator.type.ToString();
     }
 }
