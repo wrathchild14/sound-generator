@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class Generator : MonoBehaviour
@@ -38,13 +37,9 @@ public class Generator : MonoBehaviour
         set => volume = value;
     }
 
-    public void RandomizeAndPlaySoundClip()
+    public void Randomize()
     {
-        var sliders = GetComponentsInChildren<Slider>();
-
-        var value = Random.Range(0.2f, 1.2f);
-        Volume = value;
-        sliders[0].value = value;
+        volume = Random.Range(0.2f, 1.2f);
         
         startFrequency = Random.Range(3.0f, 3500.0f);
         cutoffFrequency = Random.Range(3.0f, 3500.0f);
@@ -64,9 +59,6 @@ public class Generator : MonoBehaviour
         noiseFrequency = Random.Range(200.0f, 3500.0f);
 
         type = (SoundWave)Random.Range(0, Enum.GetValues(typeof(SoundWave)).Length);
-
-        CreateSound();
-        PlayClip();
     }
 
     public void GenerateAndPlaySoundClip()
