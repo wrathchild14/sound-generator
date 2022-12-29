@@ -6,7 +6,7 @@ public class SoundVisualizationController : MonoBehaviour
 {
     public AudioSource audioSource;
     public ParticleSystem ballsParticleSystem;
-    public RawImage soundWaveImage;
+    [Header("SoundWave")] public RawImage soundWaveImage;
 
     private void Update()
     {
@@ -29,7 +29,8 @@ public class SoundVisualizationController : MonoBehaviour
     {
         // width height are hardcoded
         if (data != null)
-            soundWaveImage.texture = DrawSoundWaveTimeDomain(data, 1000, 136, Color.blue);
+            soundWaveImage.texture =
+                DrawSoundWaveTimeDomain(data, 1000, 136, Color.black); // not sure why the must be hardcoded, is bug
     }
 
     private static Texture2D DrawSoundWaveTimeDomain(IReadOnlyList<float> data, int width, int height, Color col,
