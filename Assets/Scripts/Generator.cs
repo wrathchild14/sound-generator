@@ -124,7 +124,6 @@ public class Generator : MonoBehaviour
         audioSource.Play();
     }
 
-
     public float[] GetCurrentValues()
     {
         // woah (should be a better way to do this, but this is the most optimized?)
@@ -144,7 +143,6 @@ public class Generator : MonoBehaviour
         return array;
     }
 
-    // not working
     public void SaveToFile()
     {
         if (audioSource.clip != null)
