@@ -34,6 +34,8 @@ public class Generator : MonoBehaviour
 
     public SoundWave type = SoundWave.Sine;
 
+    private float[] _currentSamples;
+
     public void Randomize()
     {
         volume = Random.Range(0.2f, 1.2f);
@@ -63,11 +65,16 @@ public class Generator : MonoBehaviour
         PlayClip();
     }
 
+    public float[] GetSoundData()
+    {
+        return _currentSamples;
+    }
+
     private void CreateSound()
     {
         var duration = attackTime + decayTime + releaseTime;
         var numSamples = (int)(SampleRate * duration);
-        var samples = new float[numSamples];
+        _currentSamples = new float[numSamples];
         for (var i = 0; i < numSamples; i++)
         {
             var t = i / (float)SampleRate;
@@ -88,17 +95,17 @@ public class Generator : MonoBehaviour
             switch (type)
             {
                 case SoundWave.Square:
-                    samples[i] = Mathf.Sign(Mathf.Sin(phase)) * envelope * volume;
+                    _currentSamples[i] = Mathf.Sign(Mathf.Sin(phase)) * envelope * volume;
                     break;
                 case SoundWave.Sawtooth:
-                    samples[i] = (2 * (phase % (2 * Mathf.PI)) / (2 * Mathf.PI) - 1) * envelope * volume;
+                    _currentSamples[i] = (2 * (phase % (2 * Mathf.PI)) / (2 * Mathf.PI) - 1) * envelope * volume;
                     break;
                 case SoundWave.Noise:
                     var noise = Mathf.PerlinNoise(t * noiseFrequency, 0) * 2 - 1;
-                    samples[i] = noise * envelope * volume;
+                    _currentSamples[i] = noise * envelope * volume;
                     break;
                 case SoundWave.Sine:
-                    samples[i] = Mathf.Sin(phase) * envelope * volume;
+                    _currentSamples[i] = Mathf.Sin(phase) * envelope * volume;
                     break;
                 default:
                     throw new NotImplementedException();
@@ -107,7 +114,7 @@ public class Generator : MonoBehaviour
 
         // removing 3d because is deprecated
         var clip = AudioClip.Create("Sound Clip", numSamples, 1, SampleRate, false);
-        clip.SetData(samples, 0);
+        clip.SetData(_currentSamples, 0);
 
         audioSource.clip = clip;
     }

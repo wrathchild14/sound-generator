@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class SoundGeneratorPresenter : MonoBehaviour
 {
-    [Header("Controller")] public Generator generator;
-
+    [Header("Controllers")] public Generator generator;
+    public SoundVisualizationController visualizationController;
     [Header("Other")] public Text typeText;
 
     private float[] _generatorValues;
@@ -23,12 +23,19 @@ public class SoundGeneratorPresenter : MonoBehaviour
         for (var i = 0; i < Generator.ParametersCount; i++) _sliders[i].value = _generatorValues[i];
     }
 
+    public void GenerateAndPlaySoundClip()
+    {
+        generator.GenerateAndPlaySoundClip();
+        visualizationController.DrawSoundWave(generator.GetSoundData());
+    }
+
     public void RandomizeAndPlaySoundClip()
     {
         generator.Randomize();
         generator.GenerateAndPlaySoundClip();
         UpdateSliders();
         OnChangedType();
+        visualizationController.DrawSoundWave(generator.GetSoundData());
     }
 
     public void OnChangedType()
