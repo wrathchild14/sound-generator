@@ -1,11 +1,14 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SoundVisualizationController : MonoBehaviour
 {
     public AudioSource audioSource;
 
+    public ParticleSystem ballsParticleSystem;
+
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         var data = new float[256];
         audioSource.GetOutputData(data, 0);
@@ -13,7 +16,8 @@ public class SoundVisualizationController : MonoBehaviour
         for (var i = 0; i < data.Length; i++)
         {
             // Use the audio data to drive the visualization
-            transform.localScale = new Vector3(1, data[i], 1);
+            var particleSystemSizeOverLifetime = ballsParticleSystem.sizeOverLifetime;
+            particleSystemSizeOverLifetime.sizeMultiplier = data[i] + 1.0f;
         }
     }
 }
