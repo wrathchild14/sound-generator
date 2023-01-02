@@ -47,6 +47,7 @@ public class SoundVisualizationController : MonoBehaviour
                 Vector3.up * (spectrumData[i] * WaveHeight * multiplier);
             particles[i] = particle;
         }
+
         ballsParticleSystem.SetParticles(particles, particles.Length);
     }
 
