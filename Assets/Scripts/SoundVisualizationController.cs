@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class SoundVisualizationController : MonoBehaviour
 {
+    private const float WaveHeight = 1.0f;
+    private const float EmissionThreshold = 0.5f;
+
     public AudioSource audioSource;
     public ParticleSystem ballsParticleSystem;
     [Header("SoundWave")] public RawImage soundWaveImage;
@@ -15,14 +18,36 @@ public class SoundVisualizationController : MonoBehaviour
 
     private void UpdateBallsParticleSystem()
     {
-        var data = new float[256];
-        audioSource.GetOutputData(data, 0);
-        for (var i = 0; i < data.Length; i++)
+        var spectrumData = new float[256];
+        var outputData = new float[256];
+        audioSource.GetOutputData(outputData, 0);
+        audioSource.GetSpectrumData(spectrumData, 0, FFTWindow.Rectangular);
+
+        UpdateParticlePosition(spectrumData);
+        UpdateEmission(outputData);
+    }
+
+    private void UpdateEmission(IReadOnlyCollection<float> outputData)
+    {
+        var audioAmplitude = 0f;
+        foreach (var t in outputData) audioAmplitude += Mathf.Abs(t);
+        audioAmplitude /= outputData.Count;
+        if (audioAmplitude > EmissionThreshold) ballsParticleSystem.Emit(2);
+    }
+
+    private void UpdateParticlePosition(IReadOnlyList<float> spectrumData)
+    {
+        var particles = new ParticleSystem.Particle[ballsParticleSystem.particleCount];
+        ballsParticleSystem.GetParticles(particles);
+        for (var i = 0; i < particles.Length; i++)
         {
-            // Use the audio data to drive the visualization
-            var particleSystemSizeOverLifetime = ballsParticleSystem.sizeOverLifetime;
-            particleSystemSizeOverLifetime.sizeMultiplier = data[i] + 1.0f;
+            var particle = particles[i];
+            var multiplier = Random.Range(0, 2) * 2 - 1;
+            particle.position +=
+                Vector3.up * (spectrumData[i] * WaveHeight * multiplier);
+            particles[i] = particle;
         }
+        ballsParticleSystem.SetParticles(particles, particles.Length);
     }
 
     public void DrawSoundWave(float[] data)
