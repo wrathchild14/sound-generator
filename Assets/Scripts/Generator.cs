@@ -149,9 +149,7 @@ public class Generator : MonoBehaviour
         {
             var date = DateTime.Now.ToString("MM-dd-yyyy");
             var fileName = "generated-" + type + "-sound-" + date;
-            var dataPath = Application.persistentDataPath;
-            var filePath = Path.Combine(dataPath, fileName);
-            Debug.Log(SavWav.Save(filePath, audioSource.clip) ? "saved file" : "error, could not save file");
+            Debug.Log(SavWav.Save(fileName, audioSource.clip) ? "saved file" : "error, could not save file");
         }
         else
         {
